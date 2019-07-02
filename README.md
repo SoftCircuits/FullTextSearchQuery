@@ -38,8 +38,8 @@ Another goal of Easy Full Text Search is to always produce a valid SQL query. Wh
 
 # Example
 ```c#
-EasyFullTextSearch fts = new EasyFullTextSearch();
-string query = fts.ToFtsQuery(searchTerm);
+FtsQuery query = new FtsQuery(true);
+string query = query.Transform(searchTerm);
 ```
 
 # Stop Words (Noise Words)
