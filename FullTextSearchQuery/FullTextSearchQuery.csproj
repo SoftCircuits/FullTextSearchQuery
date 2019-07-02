@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -13,10 +13,13 @@
     <PackageReleaseNotes>Initial release</PackageReleaseNotes>
     <NeutralLanguage>en-US</NeutralLanguage>
     <RepositoryType>git</RepositoryType>
+    <Description>Full Text Search Query is a .NET class library to help convert a user-friendly, Google-like search term into a valid Microsoft SQL Server full-text-search query. The code attempts to gracefully handle all syntax that would cause SQL Server to generate an error.</Description>
+    <PackageProjectUrl>https://github.com/SoftCircuits/FullTextSearchQuery</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SoftCircuits/FullTextSearchQuery</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="LICENSE">
+    <None Include="..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
