@@ -1,5 +1,5 @@
 # FullTextSearchQuery
-Full Text Search Query is a .NET class library to convert a user-friendly, Google-like search term into a valid Microsoft SQL Server full-text-search query. The code attempts to gracefully handle all syntax that would cause SQL Server to generate an error.
+Full Text Search Query is a .NET class library to help convert a user-friendly, Google-like search term into a valid Microsoft SQL Server full-text-search query. The code attempts to gracefully handle all syntax that would cause SQL Server to generate an error.
 
 # Details
 Microsoft SQL Server provides a powerful full-text search feature. However, the syntax is rather cryptic, especially for non-programmers. Moreover, there are many conditions that can cause SQL Server to throw up an error if things aren't exactly right.
@@ -34,12 +34,23 @@ Another goal of Easy Full Text Search is to always produce a valid SQL query. Wh
 | term1 OR NOT term2 | Expression discarded.
 | term1 NEAR NOT term2 | NEAR conjunction changed to AND.
 
-* This method converts all NEAR conjunctions to AND when either subexpression is not an InternalNode with the form TermForms.Literal.
+This method converts all NEAR conjunctions to AND when either subexpression is not an InternalNode with the form TermForms.Literal.
 
-# Example
+# Usage
+You can use the `FtsQuery` class to generate a search condition from the string in `text` as follows.
+
 ```c#
-FtsQuery query = new FtsQuery(true);
-string query = query.Transform(searchTerm);
+FtsQuery ftsQuery = new FtsQuery(true);
+string SearchTerm = ftsQuery.Transform(text);
+```
+
+The resulting condition can be passed to SQL's `CONTAINS` or `CONTAINSTABLE` functions.
+
+```sql
+SELECT select_list
+FROM table AS FT_TBL INNER JOIN
+   CONTAINSTABLE(table, column, @SearchTerm) AS KEY_TBL
+   ON FT_TBL.unique_key_column = KEY_TBL.[KEY];
 ```
 
 # Stop Words (Noise Words)
