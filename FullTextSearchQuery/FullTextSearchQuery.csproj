@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>SoftCircuits.FullTextSearchQuery</PackageId>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Jonathan Wood</Authors>
+    <Company>SoftCircuits</Company>
+    <Copyright>Copyright © 2019 SoftCircuits</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageTags>full-text-search query fulltext search sql-server</PackageTags>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
