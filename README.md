@@ -1,4 +1,11 @@
 # FullTextSearchQuery
+
+[![NuGet version (SoftCircuits.FullTextSearchQuery)](https://img.shields.io/nuget/v/SoftCircuits.FullTextSearchQuery.svg?style=flat-square)](https://www.nuget.org/packages/SoftCircuits.FullTextSearchQuery/)
+
+```
+Install-Package SoftCircuits.FullTextSearchQuery
+```
+
 Full Text Search Query is a .NET class library to help convert a user-friendly, Google-like search term into a valid Microsoft SQL Server full-text-search query. The code attempts to gracefully handle all syntax that would cause SQL Server to generate an error.
 
 # Details
