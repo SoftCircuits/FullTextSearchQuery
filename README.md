@@ -67,5 +67,15 @@ The best way to handle this seems to be to exclude these words from the SQL quer
 
 Alternatively, SQL Server provides an option for preventing the issue described above. The transform noise words option can be used to enable SQL Server to return matches even when the query contains a stop word (noise word). Set this option to 1 to enable noise word transformation.
 
+The following query can be used to get the system stop words from a SQL Server database.
+
+```sql
+SELECT ssw.stopword, slg.name
+FROM sys.fulltext_system_stopwords ssw
+JOIN sys.fulltext_languages slg
+ON slg.lcid = ssw.language_id
+WHERE slg.lcid = 1033
+```
+
 # More Information
 For more information and a discussion of the code, please see my article [Easy Full-Text Search Queries](http://www.blackbeltcoder.com/Articles/data/easy-full-text-search-queries).
