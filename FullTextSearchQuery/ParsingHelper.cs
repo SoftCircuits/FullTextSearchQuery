@@ -3,7 +3,7 @@
 //
 using System;
 
-namespace FullTextSearchQuery
+namespace SoftCircuits.FullTextSearchQuery
 {
     /// <summary>
     /// Helper class for parsing text.

@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 //
 
-namespace FullTextSearchQuery
+namespace SoftCircuits.FullTextSearchQuery
 {
     /// <summary>
     /// Internal (non-leaf) expression node class.

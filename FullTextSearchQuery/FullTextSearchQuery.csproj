@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -8,9 +8,9 @@
     <Authors>Jonathan Wood</Authors>
     <Company>SoftCircuits</Company>
     <Copyright>Copyright © 2019 SoftCircuits</Copyright>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageLicenseFile>License.txt</PackageLicenseFile>
     <PackageTags>full-text-search query fulltext search sql-server</PackageTags>
-    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <PackageReleaseNotes>Renamed namespace from FullTextSearchQuery to SoftCircuits.FullTextSearchQuery.</PackageReleaseNotes>
     <NeutralLanguage>en-US</NeutralLanguage>
     <RepositoryType>git</RepositoryType>
     <Description>Full Text Search Query is a .NET class library to help convert a user-friendly, Google-like search term into a valid Microsoft SQL Server full-text-search query. The code attempts to gracefully handle all syntax that would cause SQL Server to generate an error.</Description>
@@ -19,7 +19,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\LICENSE">
+    <None Remove="License.txt" />
+    <None Include="..\License.txt">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

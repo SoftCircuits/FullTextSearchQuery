@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 //
 
-namespace FullTextSearchQuery
+namespace SoftCircuits.FullTextSearchQuery
 {
     internal static class StandardStopWords
     {

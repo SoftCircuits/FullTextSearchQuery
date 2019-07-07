@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace FullTextSearchQuery
+namespace SoftCircuits.FullTextSearchQuery
 {
     /// <summary>
     /// Terminal (leaf) expression node class.

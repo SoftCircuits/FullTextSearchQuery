@@ -11,9 +11,9 @@
 // http://www.blackbeltcoder.com
 //
 
+using SoftCircuits.FullTextSearchQuery;
 using System;
 using System.Windows.Forms;
-using FullTextSearchQuery;
 
 namespace TestFullTextSearchQuery
 {
