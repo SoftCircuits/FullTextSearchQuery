@@ -27,7 +27,7 @@ The following list shows how various input syntaxes are interpreted.
 | -abc def | `FORMSOF(INFLECTIONAL, def) AND NOT FORMSOF(INFLECTIONAL, abc)` | Find inflectional forms of def but not inflectional forms of abc. |
 | abc def | `FORMSOF(INFLECTIONAL, abc) AND FORMSOF(INFLECTIONAL, def)` | Find inflectional forms of both abc and def.
 | abc or def | `FORMSOF(INFLECTIONAL, abc) OR FORMSOF(INFLECTIONAL, def)` | Find inflectional forms of either abc or def.
-| &lt;+abc +def&gt; | `"abc" NEAR "def"` | Find inflectional forms of abc near def.
+| &lt;+abc +def&gt; | `"abc" NEAR "def"` | Find exact term abc near exact term def.
 | abc and (def or ghi) | `FORMSOF(INFLECTIONAL, abc) AND (FORMSOF(INFLECTIONAL, def) OR FORMSOF(INFLECTIONAL, ghi))` | Find inflectional forms of both abc and either def or ghi.
 
 # Prevent SQL Server Errors
