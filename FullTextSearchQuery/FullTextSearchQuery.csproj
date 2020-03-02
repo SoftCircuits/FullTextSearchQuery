@@ -7,20 +7,28 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Jonathan Wood</Authors>
     <Company>SoftCircuits</Company>
-    <Copyright>Copyright © 2019 SoftCircuits</Copyright>
+    <Copyright>Copyright © 2019-2020 SoftCircuits</Copyright>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <PackageTags>full-text-search query fulltext search sql-server</PackageTags>
-    <PackageReleaseNotes>Renamed namespace from FullTextSearchQuery to SoftCircuits.FullTextSearchQuery.</PackageReleaseNotes>
+    <PackageTags>full-text-search full-text full text search query fulltext sql-server</PackageTags>
+    <PackageReleaseNotes>1.0.2; Reworked documentation; Additional testing and code review; Minor tweaks; Added package icon.</PackageReleaseNotes>
     <NeutralLanguage>en-US</NeutralLanguage>
     <RepositoryType>git</RepositoryType>
-    <Description>Full Text Search Query is a .NET class library to help convert a user-friendly, Google-like search term into a valid Microsoft SQL Server full-text-search query. The code attempts to gracefully handle all syntax that would cause SQL Server to generate an error.</Description>
+    <Description>Full Text Search Query is a .NET class library that converts a user-friendly search term into a valid Microsoft SQL Server full-text-search query. The code attempts to gracefully handle all syntax that would cause SQL Server to generate an error.</Description>
     <PackageProjectUrl>https://github.com/SoftCircuits/FullTextSearchQuery</PackageProjectUrl>
     <RepositoryUrl>https://github.com/SoftCircuits/FullTextSearchQuery</RepositoryUrl>
+    <Version>1.0.2</Version>
+    <PackageIcon>Logo_64x64.png</PackageIcon>
+    <PackageIconUrl />
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="License.txt" />
+    <None Remove="ve-FE62.tmp" />
     <None Include="..\License.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\Logo_64x64.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

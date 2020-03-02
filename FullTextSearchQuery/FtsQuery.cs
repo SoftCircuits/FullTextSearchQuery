@@ -1,6 +1,7 @@
-﻿// Copyright (c) 2019 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace SoftCircuits.FullTextSearchQuery
     }
 
     /// <summary>
-    /// Class to convert "user-friendly" search to SQL Server full-text search syntax.
+    /// Class to convert user-friendly search term to SQL Server full-text search syntax.
     /// Supports a Google-like syntax as described in the remarks. No exceptions are thrown
     /// for badly formed input. The code simply constructs the best query it can.
     /// </summary>
@@ -37,14 +38,14 @@ namespace SoftCircuits.FullTextSearchQuery
     /// 
     /// abc                     Find inflectional forms of abc
     /// ~abc                    Find thesaurus variations of abc
-    /// +abc                    Find exact term abc
     /// "abc"                   Find exact term abc
+    /// +abc                    Find exact term abc
     /// "abc" near "def"        Find exact term abc near exact term def
     /// abc*                    Finds words that start with abc
-    /// -abc                    Do not include results that contain inflectional forms of abc
+    /// -abc def                Find inflectional forms of def but not inflectional forms of abc
     /// abc def                 Find inflectional forms of both abc and def
     /// abc or def              Find inflectional forms of either abc or def
-    /// &lt;abc def&gt;         Find inflectional forms of abc near def
+    /// <+abc +def>             Find exact term abc near exact term def
     /// abc and (def or ghi)    Find inflectional forms of both abc and either def or ghi
     /// </remarks>
     public class FtsQuery
@@ -59,7 +60,7 @@ namespace SoftCircuits.FullTextSearchQuery
         public HashSet<string> StopWords { get; private set; }
 
         /// <summary>
-        /// Constructs an <c>FtsQuery</c> instance.
+        /// Constructs an <see cref="FtsQuery"></see> instance.
         /// </summary>
         /// <param name="addStandardStopWords">If true, the standard stopwords
         /// are added to the stopword list.</param>
@@ -71,8 +72,7 @@ namespace SoftCircuits.FullTextSearchQuery
         }
 
         /// <summary>
-        /// Determines if the given word has been identified as
-        /// a stop word.
+        /// Determines if the given word has been identified as a stop word.
         /// </summary>
         /// <param name="word">Word to test.</param>
         protected bool IsStopWord(string word) => StopWords.Contains(word);

@@ -1,6 +1,7 @@
-﻿// Copyright (c) 2019 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
+
 using System;
 
 namespace SoftCircuits.FullTextSearchQuery
