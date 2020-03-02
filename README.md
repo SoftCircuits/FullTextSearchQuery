@@ -6,7 +6,7 @@
 Install-Package SoftCircuits.FullTextSearchQuery
 ```
 
-Full Text Search Query is a .NET class library to help convert a user-friendly, Google-like search term into a valid Microsoft SQL Server full-text-search query. The code attempts to gracefully handle all syntax that would cause SQL Server to generate an error.
+Full Text Search Query is a .NET class library that converts a user-friendly search term into a valid Microsoft SQL Server full-text-search query. The code attempts to gracefully handle all syntax that would cause SQL Server to generate an error.
 
 # Details
 Microsoft SQL Server provides a powerful full-text search feature. However, the syntax is rather cryptic, especially for non-programmers. Moreover, there are many conditions that can cause SQL Server to throw up an error if things aren't exactly right.
@@ -16,19 +16,19 @@ Easy Full Text Search converts a user-friendly, Google-like search term to the c
 # Input Syntax
 The following list shows how various input syntaxes are interpreted.
 
-| Term | Meaning
-| ---- | ----
-| abc | Find inflectional forms of abc.
-| ~abc | Find thesaurus variations of abc.
-| +abc | Find exact term abc.
-| "abc" | Find exact term abc.
-| "abc" near "def" | Find exact term abc near exact term def
-| abc* | Finds words that start with abc.
-| -abc | Do not include results that contain inflectional forms of abc.
-| abc def | Find inflectional forms of both abc and def.
-| abc or def | Find inflectional forms of either abc or def.
-| &lt;abc def&gt; | Find inflectional forms of abc near def.
-| abc and (def or ghi) | Find inflectional forms of both abc and either def or ghi.
+| Input | Output | Description |
+| ---- | ---- | ---- |
+| abc | `FORMSOF(INFLECTIONAL, abc)` | Find inflectional forms of abc.
+| ~abc | `FORMSOF(THESAURUS, abc)` | Find thesaurus variations of abc.
+| "abc" | `"abc"` | Find exact term abc.
+| +abc | `abc"` | Find exact term abc.
+| "abc" near "def" | `"abc" NEAR "def"` | Find exact term abc near exact term def.
+| abc* | `"abc*"` | Finds words that start with abc.
+| -abc def | `FORMSOF(INFLECTIONAL, def) AND NOT FORMSOF(INFLECTIONAL, abc)` | Find inflectional forms of def but not inflectional forms of abc. |
+| abc def | `FORMSOF(INFLECTIONAL, abc) AND FORMSOF(INFLECTIONAL, def)` | Find inflectional forms of both abc and def.
+| abc or def | `FORMSOF(INFLECTIONAL, abc) OR FORMSOF(INFLECTIONAL, def)` | Find inflectional forms of either abc or def.
+| &lt;+abc +def&gt; | `"abc" NEAR "def"` | Find exact term abc near exact term def.
+| abc and (def or ghi) | `FORMSOF(INFLECTIONAL, abc) AND (FORMSOF(INFLECTIONAL, def) OR FORMSOF(INFLECTIONAL, ghi))` | Find inflectional forms of both abc and either def or ghi.
 
 # Prevent SQL Server Errors
 Another goal of Easy Full Text Search is to always produce a valid SQL query. While the expression tree may be properly constructed, it may represent a query that is not supported by SQL Server. After constructing the expression tree, the code traverse the tree and takes steps to correct any conditions that would cause SQL Server to throw an error
@@ -44,14 +44,14 @@ Another goal of Easy Full Text Search is to always produce a valid SQL query. Wh
 This method converts all NEAR conjunctions to AND when either subexpression is not an InternalNode with the form TermForms.Literal.
 
 # Usage
-You can use the `FtsQuery` class to generate a search condition from the string in `text` as follows.
+Use the `Transform()` method to convert a search expression to a valid SQL Server full-text search condition. This method takes a user-friendly search query and converts it to a correctly formed full-text search condition that can be passed to SQL Server's `CONTAINS` or `CONTAINSTABLE` functions. If the query contains invalid terms, the code will do what it can to return a valid search condition. If no valid terms were found, this method returns an empty string.
 
 ```c#
 FtsQuery ftsQuery = new FtsQuery(true);
-string SearchTerm = ftsQuery.Transform(text);
+string searchTerm = ftsQuery.Transform(text);
 ```
 
-The resulting condition can be passed to SQL's `CONTAINS` or `CONTAINSTABLE` functions.
+In the following SQL query example, `@SearchTerm` is a reference to the string returned from `Transform()`.
 
 ```sql
 SELECT select_list
