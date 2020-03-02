@@ -51,7 +51,7 @@ FtsQuery ftsQuery = new FtsQuery(true);
 string searchTerm = ftsQuery.Transform(text);
 ```
 
-In the following example, `@SearchTerm` is a reference to the string returned from `Transform()`.
+In the following SQL query example, `@SearchTerm` is a reference to the string returned from `Transform()`.
 
 ```sql
 SELECT select_list
