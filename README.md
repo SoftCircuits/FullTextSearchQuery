@@ -44,7 +44,7 @@ Another goal of Easy Full Text Search is to always produce a valid SQL query. Wh
 This method converts all NEAR conjunctions to AND when either subexpression is not an InternalNode with the form TermForms.Literal.
 
 # Usage
-Use the `Transform()` method to convert a search expression to a valid SQL Server full-text search condition. This method takes a search query and converts it to a correctly formed full-text-search condition that can be passed to SQL Server's `CONTAINS` or `CONTAINSTABLE` functions. If the query contains invalid terms, the code will do what it can to return a valid search condition. If no valid terms were found, this method returns an empty string.
+Use the `Transform()` method to convert a search expression to a valid SQL Server full-text search condition. This method takes a user-friendly search query and converts it to a correctly formed full-text search condition that can be passed to SQL Server's `CONTAINS` or `CONTAINSTABLE` functions. If the query contains invalid terms, the code will do what it can to return a valid search condition. If no valid terms were found, this method returns an empty string.
 
 ```c#
 FtsQuery ftsQuery = new FtsQuery(true);
