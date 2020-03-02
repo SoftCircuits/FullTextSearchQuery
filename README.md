@@ -6,7 +6,7 @@
 Install-Package SoftCircuits.FullTextSearchQuery
 ```
 
-Full Text Search Query is a .NET class library that converts a user-friendly, Google-like search term into a valid Microsoft SQL Server full-text-search query. The code attempts to gracefully handle all syntax that would cause SQL Server to generate an error.
+Full Text Search Query is a .NET class library that converts a user-friendly search term into a valid Microsoft SQL Server full-text-search query. The code attempts to gracefully handle all syntax that would cause SQL Server to generate an error.
 
 # Details
 Microsoft SQL Server provides a powerful full-text search feature. However, the syntax is rather cryptic, especially for non-programmers. Moreover, there are many conditions that can cause SQL Server to throw up an error if things aren't exactly right.
