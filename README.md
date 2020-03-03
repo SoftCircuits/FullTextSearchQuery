@@ -6,22 +6,22 @@
 Install-Package SoftCircuits.FullTextSearchQuery
 ```
 
-Full Text Search Query is a .NET class library that converts a user-friendly search term into a valid Microsoft SQL Server full-text-search query. The code attempts to gracefully handle all syntax that would cause SQL Server to generate an error.
+FullTextSearchQuery is a .NET class library that converts a user-friendly search term into a valid Microsoft SQL Server full-text-search query. The code attempts to detect and handle all cases where the query would otherwise cause SQL Server to generate an error.
 
-# Details
+# Introduction
 Microsoft SQL Server provides a powerful full-text search feature. However, the syntax is rather cryptic, especially for non-programmers. Moreover, there are many conditions that can cause SQL Server to throw up an error if things aren't exactly right.
 
-Easy Full Text Search converts a user-friendly, Google-like search term to the corresponding full-text search SQL query. Its goal is to never throw exceptions on badly formed input. It attempts to simply construct a valid query as best it can, regardless of the input.
+FullTextSearchQuery converts a user-friendly, Google-like search term to the corresponding full-text search SQL query condition. Its goal is to never throw exceptions on badly formed input. It simply constructs the best valid query it can from the input.
 
-# Input Syntax
-The following list shows how various input syntaxes are interpreted.
+# Examples
+The following list shows how various input are transformed.
 
 | Input | Output | Description |
 | ---- | ---- | ---- |
 | abc | `FORMSOF(INFLECTIONAL, abc)` | Find inflectional forms of abc.
 | ~abc | `FORMSOF(THESAURUS, abc)` | Find thesaurus variations of abc.
 | "abc" | `"abc"` | Find exact term abc.
-| +abc | `abc"` | Find exact term abc.
+| +abc | `"abc"` | Find exact term abc.
 | "abc" near "def" | `"abc" NEAR "def"` | Find exact term abc near exact term def.
 | abc* | `"abc*"` | Finds words that start with abc.
 | -abc def | `FORMSOF(INFLECTIONAL, def) AND NOT FORMSOF(INFLECTIONAL, abc)` | Find inflectional forms of def but not inflectional forms of abc. |
@@ -30,8 +30,10 @@ The following list shows how various input syntaxes are interpreted.
 | &lt;+abc +def&gt; | `"abc" NEAR "def"` | Find exact term abc near exact term def.
 | abc and (def or ghi) | `FORMSOF(INFLECTIONAL, abc) AND (FORMSOF(INFLECTIONAL, def) OR FORMSOF(INFLECTIONAL, ghi))` | Find inflectional forms of both abc and either def or ghi.
 
-# Prevent SQL Server Errors
-Another goal of Easy Full Text Search is to always produce a valid SQL query. While the expression tree may be properly constructed, it may represent a query that is not supported by SQL Server. After constructing the expression tree, the code traverse the tree and takes steps to correct any conditions that would cause SQL Server to throw an error
+# Preventing SQL Server Errors
+Even after a syntactically correct query has been generated, SQL Server can still generate an error for some queries. For example, in the table above you can see that the ouput for `-abc def` swaps the two subexpressions. This is because `NOT FORMSOF(INFLECTIONAL, abc) AND FORMSOF(INFLECTIONAL, def)` will cause an error. SQL Server does not like the `NOT` at the start. In this example, FullTextSearchQuery will swaps the two subexpressions (on either side of `AND`).
+
+After constructing a query, FullTextSearchQuery will check for this and several other error conditions and make corrections as necessary. The following table describes these conditions.
 
 | Term | Action Taken
 | ---- | ----
@@ -41,7 +43,7 @@ Another goal of Easy Full Text Search is to always produce a valid SQL query. Wh
 | term1 OR NOT term2 | Expression discarded.
 | term1 NEAR NOT term2 | NEAR conjunction changed to AND.
 
-This method converts all NEAR conjunctions to AND when either subexpression is not an InternalNode with the form TermForms.Literal.
+FullTextSearchQuery converts all NEAR conjunctions to AND when either subexpression is not an InternalNode with the form TermForms.Literal.
 
 # Usage
 Use the `Transform()` method to convert a search expression to a valid SQL Server full-text search condition. This method takes a user-friendly search query and converts it to a correctly formed full-text search condition that can be passed to SQL Server's `CONTAINS` or `CONTAINSTABLE` functions. If the query contains invalid terms, the code will do what it can to return a valid search condition. If no valid terms were found, this method returns an empty string.
