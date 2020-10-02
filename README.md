@@ -51,6 +51,7 @@ FullTextSearchQuery converts all NEAR conjunctions to AND when either subexpress
 Use the `Transform()` method to convert a search expression to a valid SQL Server full-text search condition. This method takes a user-friendly search query and converts it to a correctly formed full-text search condition that can be passed to SQL Server's `CONTAINS` or `CONTAINSTABLE` functions. If the query contains invalid terms, the code will do what it can to return a valid search condition. If no valid terms were found, this method returns an empty string.
 
 ```c#
+// Pass true to add the standard stop words
 FtsQuery ftsQuery = new FtsQuery(true);
 string searchTerm = ftsQuery.Transform(text);
 ```
@@ -67,9 +68,11 @@ FROM table AS FT_TBL INNER JOIN
 # Stop Words (Noise Words)
 One thing to be aware of is SQL Server's handling of stop words. Stop words are words such as *a*, *and*, and *the*. These words are not included in the full-text index. SQL Server does not index these words because they are very common and don't add to the quality of the search. Since these words are not indexed, SQL Server will never find a match for these words. The result is that a search for a stop word will return no results, even though that stop word may appear in an articles!
 
-The best way to handle this seems to be to exclude these words from the SQL query. Easy Full Text Search allows you to do this by adding stop words to the `StopWords` collection property. Stop words will not be included in the resulting query unless they are quoted, thereby preventing stop words in the query from blocking all results. The easiest way to add a standard list of stop words to the `StopWords` collection is to pass `true` to the `FtsQuery` constructor. (To see which words were added, you can inspect the `StopWords` collection.)
+The best way to handle this seems to be to exclude these words from the SQL query. Easy Full Text Search allows you to do this by adding stop words to the `StopWords` collection property. Stop words will not be included in the resulting query unless they are quoted, thereby preventing stop words in the query from blocking all results.
 
-Alternatively, SQL Server provides an option for preventing the issue described above. The transform noise words option can be used to enable SQL Server to return matches even when the query contains a stop word (noise word). Set this option to 1 to enable noise word transformation.
+The easiest way to add a standard list of stop words to the `StopWords` collection is to pass `true` to the `FtsQuery` constructor. (To see which words were added, you can simply inspect the `StopWords` collection.) You can modify the `StopWords` collection at any time, as needed.
+
+Alternatively, SQL Server provides an option for preventing the issue described above. The transform noise words option can be used to enable SQL Server to return matches even when the query contains a stop word (noise word). Set this option to 1 to enable noise word transformation. See [transform noise words Server Configuration Option](https://docs.microsoft.com/en-us/sql/database-engine/configure-windows/transform-noise-words-server-configuration-option?view=sql-server-ver15) for more information.
 
 The following query can be used to get the system stop words from a SQL Server database.
 
