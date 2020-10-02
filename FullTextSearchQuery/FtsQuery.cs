@@ -62,13 +62,16 @@ namespace SoftCircuits.FullTextSearchQuery
         /// <summary>
         /// Constructs an <see cref="FtsQuery"></see> instance.
         /// </summary>
-        /// <param name="addStandardStopWords">If true, the standard stopwords
+        /// <param name="addStandardStopWords">If true, the standard list of stopwords
         /// are added to the stopword list.</param>
         public FtsQuery(bool addStandardStopWords = false)
         {
             StopWords = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             if (addStandardStopWords)
-                StopWords.CopyTo(StandardStopWords.StopWords);
+            {
+                foreach (string stopword in StandardStopWords.StopWords)
+                    StopWords.Add(stopword);
+            }
         }
 
         /// <summary>
