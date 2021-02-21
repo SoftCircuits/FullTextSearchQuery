@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace SoftCircuits.FullTextSearchQuery
         public bool Grouped { get; set; }
 
         // Class members
-        public string Term { get; set; }
+        public string? Term { get; set; }
         public TermForm TermForm { get; set; }
 
         private static readonly Dictionary<TermForm, string> TermFormatLookup = new Dictionary<TermForm, string>
@@ -29,7 +29,7 @@ namespace SoftCircuits.FullTextSearchQuery
         // Convert node to string
         public override string ToString()
         {
-            if (TermFormatLookup.TryGetValue(TermForm, out string format))
+            if (TermFormatLookup.TryGetValue(TermForm, out string? format))
                 return string.Format(format, Exclude ? "NOT " : string.Empty, Term);
             Debug.Assert(false);
             return string.Empty;

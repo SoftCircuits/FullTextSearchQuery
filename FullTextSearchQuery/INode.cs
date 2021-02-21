@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -19,5 +19,10 @@ namespace SoftCircuits.FullTextSearchQuery
         /// Indicates this term is enclosed in parentheses
         /// </summary>
         bool Grouped { get; set; }
+
+        /// <summary>
+        /// Non-nullable ToString().
+        /// </summary>
+        string ToString();
     }
 }

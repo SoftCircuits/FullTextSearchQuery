@@ -1,8 +1,9 @@
-﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SoftCircuits.FullTextSearchQuery
 {
@@ -31,7 +32,7 @@ namespace SoftCircuits.FullTextSearchQuery
         /// Constructs a TextParse instance.
         /// </summary>
         /// <param name="text">Text to be parsed.</param>
-        public ParsingHelper(string text = null)
+        public ParsingHelper(string? text = null)
         {
             Reset(text);
         }
@@ -40,7 +41,10 @@ namespace SoftCircuits.FullTextSearchQuery
         /// Sets the text to be parsed and resets the current position to the start of that text.
         /// </summary>
         /// <param name="text">The text to be parsed.</param>
-        public void Reset(string text)
+#if NET5_0
+        [MemberNotNull(nameof(Text))]
+#endif
+        public void Reset(string? text)
         {
             Text = text ?? string.Empty;
             Index = 0;

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -101,7 +101,7 @@ namespace SoftCircuits.FullTextSearchQuery
         /// if a valid condition was not possible.</returns>
         public string Transform(string query)
         {
-            INode node = ParseNode(query, ConjunctionType.And);
+            INode? node = ParseNode(query, ConjunctionType.And);
             node = FixUpExpressionTree(node, true);
             return node?.ToString() ?? string.Empty;
         }
@@ -112,15 +112,15 @@ namespace SoftCircuits.FullTextSearchQuery
         /// </summary>
         /// <param name="query">Query segment to be converted.</param>
         /// <param name="defaultConjunction">Implicit conjunction type.</param>
-        /// <returns>Root node of expression tree</returns>
-        internal INode ParseNode(string query, ConjunctionType defaultConjunction)
+        /// <returns>Root node of expression tree.</returns>
+        internal INode? ParseNode(string? query, ConjunctionType defaultConjunction)
         {
             ConjunctionType conjunction = defaultConjunction;
             TermForm termForm = TermForm.Inflectional;
             bool termExclude = false;
             bool resetState = true;
-            INode root = null;
-            INode node;
+            INode? root = null;
+            INode? node;
             string term;
 
             ParsingHelper parser = new ParsingHelper(query);
@@ -221,6 +221,8 @@ namespace SoftCircuits.FullTextSearchQuery
         /// Fixes any portions of the expression tree that would produce an invalid SQL Server full-text
         /// query.
         /// </summary>
+        /// <param name="node">Node to fix up</param>
+        /// <param name="isRoot">True if node is the tree's root node</param>
         /// <remarks>
         /// While our expression tree may be properly constructed, it may represent a query that
         /// is not supported by SQL Server. This method traverses the expression tree and corrects
@@ -238,18 +240,15 @@ namespace SoftCircuits.FullTextSearchQuery
         /// * This method converts all NEAR conjunctions to AND when either subexpression is not
         /// an InternalNode with the form TermForms.Literal.
         /// </remarks>
-        /// <param name="node">Node to fix up</param>
-        /// <param name="isRoot">True if node is the tree's root node</param>
-        internal INode FixUpExpressionTree(INode node, bool isRoot = false)
+        internal INode? FixUpExpressionTree(INode? node, bool isRoot = false)
         {
             // Test for empty expression tree
             if (node == null) return null;
 
             // Special handling for internal nodes
-            if (node is InternalNode)
+            if (node is InternalNode internalNode)
             {
                 // Fix up child nodes
-                var internalNode = node as InternalNode;
                 internalNode.LeftChild = FixUpExpressionTree(internalNode.LeftChild);
                 internalNode.RightChild = FixUpExpressionTree(internalNode.RightChild);
 
@@ -300,40 +299,41 @@ namespace SoftCircuits.FullTextSearchQuery
                 }
             }
             // Eliminate expression group if it contains only exclude expressions
-            return ((node.Grouped || isRoot) && node.Exclude) ? null : node;
+            if (node == null || ((node.Grouped || isRoot) && node.Exclude))
+                return null;
+            return node;
         }
 
         /// <summary>
         /// Determines if the specified node is invalid on either side of a NEAR conjuction.
         /// </summary>
         /// <param name="node">Node to test</param>
-        internal bool IsInvalidWithNear(INode node)
+        internal static bool IsInvalidWithNear(INode? node)
         {
             // NEAR is only valid with TerminalNodes with form TermForms.Literal
-            return !(node is TerminalNode) || ((TerminalNode)node).TermForm != TermForm.Literal;
+            return node is not TerminalNode terminalNode || terminalNode.TermForm != TermForm.Literal;
         }
 
         /// <summary>
         /// Determines if the specified node is invalid on either side of an OR conjunction.
         /// </summary>
         /// <param name="node">Node to test</param>
-        internal bool IsInvalidWithOr(INode node)
+        internal static bool IsInvalidWithOr(INode? node)
         {
             // OR is only valid with non-null, non-excluded (NOT) subexpressions
             return node == null || node.Exclude == true;
         }
 
         /// <summary>
-        /// Creates an expression node and adds it to the
-        /// give tree.
+        /// Creates an expression node and adds it to the give tree.
         /// </summary>
-        /// <param name="root">Root node of expression tree</param>
-        /// <param name="term">Term for this node</param>
-        /// <param name="termForm">Indicates form of this term</param>
-        /// <param name="termExclude">Indicates if this is an excluded term</param>
-        /// <param name="conjunction">Conjunction used to join with other nodes</param>
-        /// <returns>The new root node</returns>
-        internal INode AddNode(INode root, string term, TermForm termForm, bool termExclude, ConjunctionType conjunction)
+        /// <param name="root">Root node of expression tree.</param>
+        /// <param name="term">Term for this node.</param>
+        /// <param name="termForm">Indicates form of this term.</param>
+        /// <param name="termExclude">Indicates if this is an excluded term.</param>
+        /// <param name="conjunction">Conjunction used to join with other nodes.</param>
+        /// <returns>The new root node.</returns>
+        internal INode? AddNode(INode? root, string term, TermForm termForm, bool termExclude, ConjunctionType conjunction)
         {
             if (term.Length > 0 && !IsStopWord(term))
             {
@@ -355,7 +355,7 @@ namespace SoftCircuits.FullTextSearchQuery
         /// <param name="node">Node to add</param>
         /// <param name="conjunction">Conjunction used to join with other nodes</param>
         /// <returns>The new root node</returns>
-        internal INode AddNode(INode root, INode node, ConjunctionType conjunction, bool group = false)
+        internal static INode? AddNode(INode? root, INode? node, ConjunctionType conjunction, bool group = false)
         {
             if (node != null)
             {
@@ -385,7 +385,7 @@ namespace SoftCircuits.FullTextSearchQuery
         /// <param name="openChar">Start-of-block delimiter</param>
         /// <param name="closeChar">End-of-block delimiter</param>
         /// <returns>The extracted text</returns>
-        internal string ExtractBlock(ParsingHelper parser, char openChar, char closeChar)
+        internal static string ExtractBlock(ParsingHelper parser, char openChar, char closeChar)
         {
             // Track delimiter depth
             int depth = 1;
