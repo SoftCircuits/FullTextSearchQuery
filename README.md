@@ -18,8 +18,8 @@ The following list shows how various input are transformed.
 
 | Input | Output | Description |
 | ---- | ---- | ---- |
-| abc | `FORMSOF(INFLECTIONAL, abc)` | Find inflectional forms of abc.
-| ~abc | `FORMSOF(THESAURUS, abc)` | Find thesaurus variations of abc.
+| abc | `FORMSOF(INFLECTIONAL, abc)` | Find inflectional* forms of abc.
+| ~abc | `FORMSOF(THESAURUS, abc)` | Find thesaurus* variations of abc.
 | "abc" | `"abc"` | Find exact term abc.
 | +abc | `"abc"` | Find exact term abc.
 | "abc" near "def" | `"abc" NEAR "def"` | Find exact term abc near exact term def.
@@ -29,6 +29,8 @@ The following list shows how various input are transformed.
 | abc or def | `FORMSOF(INFLECTIONAL, abc) OR FORMSOF(INFLECTIONAL, def)` | Find inflectional forms of either abc or def.
 | &lt;+abc +def&gt; | `"abc" NEAR "def"` | Find exact term abc near exact term def.
 | abc and (def or ghi) | `FORMSOF(INFLECTIONAL, abc) AND (FORMSOF(INFLECTIONAL, def) OR FORMSOF(INFLECTIONAL, ghi))` | Find inflectional forms of both abc and either def or ghi.
+* Inflectional finds all of the tenses of a word. For example, if you passed in Start, Inflectional will find Start, Started, and Starting. For nouns, Inflectional finds the single, plural, and possessive forms.
+* Thesaurus finds variations of a word, Start, Begin, etc. Essentially, words that have the same meaning.
 
 # Preventing SQL Server Errors
 Even after a syntactically correct query has been generated, SQL Server can still generate an error for some queries. For example, in the table above you can see that the ouput for `-abc def` swaps the two subexpressions. This is because `NOT FORMSOF(INFLECTIONAL, abc) AND FORMSOF(INFLECTIONAL, def)` will cause an error. SQL Server does not like the `NOT` at the start. In this example, FullTextSearchQuery will swaps the two subexpressions (on either side of `AND`).
@@ -51,6 +53,21 @@ Use the `Transform()` method to convert a search expression to a valid SQL Serve
 ```c#
 // Pass true to add the standard stop words
 FtsQuery ftsQuery = new FtsQuery(true);
+string searchTerm = ftsQuery.Transform(text);
+```
+
+```c#
+// Pass extended settings to configure FtsQuery
+FtsQuery ftsQuery = new FtsQuery(new FtsQuerySettings
+{
+	AddStandardStopWords = true,
+	UseInflectionalSearch = true,
+	TreatNearAsOperator = true,
+	UseTrailingWildcardForAllWords = false,
+	DefaultConjunction = DefaultConjunctionType.And,
+	DisabledPunctuation = new[] { '-' },
+	AdditionalStopWords = new[] { "car" }
+});
 string searchTerm = ftsQuery.Transform(text);
 ```
 

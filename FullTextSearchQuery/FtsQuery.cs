@@ -51,7 +51,7 @@ namespace SoftCircuits.FullTextSearchQuery
     public class FtsQuery
     {
         // Characters not allowed in unquoted search terms
-        protected static readonly string Punctuation = "~\"`!@#$%^&*()-+=[]{}\\|;:,.<>?/";
+        protected readonly string Punctuation = "~\"`!@#$%^&*()-+=[]{}\\|;:,.<>?/";
 
         /// <summary>
         /// Collection of stop words. These words will not
@@ -60,17 +60,50 @@ namespace SoftCircuits.FullTextSearchQuery
         public HashSet<string> StopWords { get; private set; }
 
         /// <summary>
+        /// Fts settings to change default behavior.
+        /// </summary>
+        private FtsQuerySettings _settings;
+
+        /// <summary>
         /// Constructs an <see cref="FtsQuery"></see> instance.
         /// </summary>
         /// <param name="addStandardStopWords">If true, the standard list of stopwords
         /// are added to the stopword list.</param>
         public FtsQuery(bool addStandardStopWords = false)
+            : this(new FtsQuerySettings{AddStandardStopWords = addStandardStopWords})
         {
+        }
+
+        /// <summary>
+        /// Constructs an <see cref="FtsQuery"></see> instance.
+        /// </summary>
+        /// <param name="settings">Settings used to change default behavior.</param>
+        public FtsQuery(FtsQuerySettings settings)
+        {
+            _settings = settings;
+
             StopWords = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            if (addStandardStopWords)
+            if (settings.AddStandardStopWords)
             {
-                foreach (string stopword in StandardStopWords.StopWords)
-                    StopWords.Add(stopword);
+                foreach (string stopWord in StandardStopWords.StopWords)
+                    StopWords.Add(stopWord);
+            }
+
+            foreach (string stopWord in settings.AdditionalStopWords)
+                StopWords.Add(stopWord);
+
+            if (_settings.EnabledPunctuation.Any())
+            {
+                Punctuation = string.Empty;
+                foreach (var enabledChar in _settings.EnabledPunctuation)
+                {
+                    Punctuation += enabledChar.ToString();
+                }
+            }
+
+            foreach (var disabledChar in _settings.DisabledPunctuation)
+            {
+                Punctuation = Punctuation.Replace(disabledChar.ToString(), string.Empty);
             }
         }
 
@@ -101,7 +134,7 @@ namespace SoftCircuits.FullTextSearchQuery
         /// if a valid condition was not possible.</returns>
         public string Transform(string query)
         {
-            INode? node = ParseNode(query, ConjunctionType.And);
+            INode? node = ParseNode(query, (ConjunctionType)_settings.DefaultConjunction);
             node = FixUpExpressionTree(node, true);
             return node?.ToString() ?? string.Empty;
         }
@@ -116,7 +149,7 @@ namespace SoftCircuits.FullTextSearchQuery
         internal INode? ParseNode(string? query, ConjunctionType defaultConjunction)
         {
             ConjunctionType conjunction = defaultConjunction;
-            TermForm termForm = TermForm.Inflectional;
+            TermForm termForm = _settings.UseInflectionalSearch ? TermForm.Inflectional : TermForm.Literal;
             bool termExclude = false;
             bool resetState = true;
             INode? root = null;
@@ -130,7 +163,7 @@ namespace SoftCircuits.FullTextSearchQuery
                 {
                     // Reset modifiers
                     conjunction = defaultConjunction;
-                    termForm = TermForm.Inflectional;
+                    termForm = _settings.UseInflectionalSearch ? TermForm.Inflectional : TermForm.Literal;
                     termExclude = false;
                     resetState = false;
                 }
@@ -195,6 +228,9 @@ namespace SoftCircuits.FullTextSearchQuery
                         term += parser.Peek();
                         parser.MoveAhead();
                         termForm = TermForm.Literal;
+                        root = AddNode(root, term, termForm, termExclude, conjunction);
+                        resetState = true;
+                        continue;
                     }
 
                     // Interpret term
@@ -203,10 +239,17 @@ namespace SoftCircuits.FullTextSearchQuery
                         conjunction = ConjunctionType.And;
                     else if (comparer.Compare(term, "OR") == 0)
                         conjunction = ConjunctionType.Or;
-                    else if (comparer.Compare(term, "NEAR") == 0)
+                    else if (_settings.TreatNearAsOperator && comparer.Compare(term, "NEAR") == 0)
                         conjunction = ConjunctionType.Near;
                     else if (comparer.Compare(term, "NOT") == 0)
                         termExclude = true;
+                    else if (_settings.UseTrailingWildcardForAllWords)
+                    {
+                        term += '*';
+                        termForm = TermForm.Literal;
+                        root = AddNode(root, term, termForm, termExclude, conjunction);
+                        resetState = true;
+                    }
                     else
                     {
                         root = AddNode(root, term, termForm, termExclude, conjunction);
