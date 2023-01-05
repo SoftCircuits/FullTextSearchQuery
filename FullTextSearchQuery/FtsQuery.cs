@@ -53,6 +53,8 @@ namespace SoftCircuits.FullTextSearchQuery
         // Characters not allowed in unquoted search terms
         protected static readonly string Punctuation = "~\"`!@#$%^&*()-+=[]{}\\|;:,.<>?/";
 
+        // Assume that if there are no quotes around the term, then it is an inflectional form
+        public bool DefaultToInflectional { get; set; } = true;
         /// <summary>
         /// Collection of stop words. These words will not
         /// be included in the resulting query unless quoted.
@@ -64,8 +66,9 @@ namespace SoftCircuits.FullTextSearchQuery
         /// </summary>
         /// <param name="addStandardStopWords">If true, the standard list of stopwords
         /// are added to the stopword list.</param>
-        public FtsQuery(bool addStandardStopWords = false)
+        public FtsQuery(bool addStandardStopWords = false, bool defaultToInflectional = true)
         {
+            this.DefaultToInflectional = defaultToInflectional;
             StopWords = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             if (addStandardStopWords)
             {
@@ -130,7 +133,7 @@ namespace SoftCircuits.FullTextSearchQuery
                 {
                     // Reset modifiers
                     conjunction = defaultConjunction;
-                    termForm = TermForm.Inflectional;
+                    termForm = (DefaultToInflectional) ? TermForm.Inflectional : TermForm.Literal;
                     termExclude = false;
                     resetState = false;
                 }

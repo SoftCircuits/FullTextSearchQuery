@@ -52,7 +52,8 @@
             this.txtSearchTerm.Name = "txtSearchTerm";
             this.txtSearchTerm.Size = new System.Drawing.Size(458, 20);
             this.txtSearchTerm.TabIndex = 1;
-            this.txtSearchTerm.Text = "abc def";
+            this.txtSearchTerm.Text = "(java and mysql) or (オラクル and php)";
+            this.txtSearchTerm.TextChanged += new System.EventHandler(this.txtSearchTerm_TextChanged);
             // 
             // label2
             // 

@@ -17,8 +17,13 @@ namespace TestFullTextSearchQuery
 
         private void btnConvert_Click(object sender, EventArgs e)
         {
-            FtsQuery query = new FtsQuery(true);
+            FtsQuery query = new FtsQuery(addStandardStopWords: true, defaultToInflectional: false);
             txtSqlQuery.Text = query.Transform(txtSearchTerm.Text);
+        }
+
+        private void txtSearchTerm_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
