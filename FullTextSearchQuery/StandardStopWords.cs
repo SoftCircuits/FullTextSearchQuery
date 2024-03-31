@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2020-2024 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -20,13 +20,13 @@ namespace SoftCircuits.FullTextSearchQuery
         /// from the current database, use the following query. As seen in the
         /// query, the list is filtered to include only English stop words.
         /// </para>
-        /// <para>
+        /// <code>
         /// SELECT ssw.stopword, slg.name
         /// FROM sys.fulltext_system_stopwords ssw
         /// JOIN sys.fulltext_languages slg
         /// ON slg.lcid = ssw.language_id
         /// WHERE slg.lcid = 1033
-        /// </para>
+        /// </code>
         /// </remarks>
         public static string[] StopWords =
         {

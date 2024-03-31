@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2020-2024 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -34,23 +34,61 @@ namespace SoftCircuits.FullTextSearchQuery
     /// for badly formed input. The code simply constructs the best query it can.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// The following list shows how various syntaxes are interpreted.
-    /// 
-    /// abc                     Find inflectional forms of abc
-    /// ~abc                    Find thesaurus variations of abc
-    /// "abc"                   Find exact term abc
-    /// +abc                    Find exact term abc
-    /// "abc" near "def"        Find exact term abc near exact term def
-    /// abc*                    Finds words that start with abc
-    /// -abc def                Find inflectional forms of def but not inflectional forms of abc
-    /// abc def                 Find inflectional forms of both abc and def
-    /// abc or def              Find inflectional forms of either abc or def
-    /// <+abc +def>             Find exact term abc near exact term def
-    /// abc and (def or ghi)    Find inflectional forms of both abc and either def or ghi
+    /// </para>
+    /// <list type="table">
+    /// <item>
+    /// <term>abc</term>
+    /// <description>Find inflectional forms of abc</description>
+    /// </item>
+    /// <item>
+    /// <term>~abc</term>
+    /// <description>Find thesaurus variations of abc</description>
+    /// </item>
+    /// <item>
+    /// <term>&quot;abc&quot;</term>
+    /// <description>Find exact term abc</description>
+    /// </item>
+    /// <item>
+    /// <term>+abc</term>
+    /// <description> Find exact term abc</description>
+    /// </item>
+    /// <item>
+    /// <term>&quot;abc&quot; near &quot;def&quot;</term>
+    /// <description>Find exact term abc near exact term def</description>
+    /// </item>
+    /// <item>
+    /// <term>abc*</term>
+    /// <description>Finds words that start with abc</description>
+    /// </item>
+    /// <item>
+    /// <term>-abc def</term>
+    /// <description>Find inflectional forms of def but not inflectional forms of abc</description>
+    /// </item>
+    /// <item>
+    /// <term>abc def</term>
+    /// <description>Find inflectional forms of both abc and def</description>
+    /// </item>
+    /// <item>
+    /// <term>abc or def</term>
+    /// <description>Find inflectional forms of either abc or def</description>
+    /// </item>
+    /// <item>
+    /// <term>&lt;+abc +def&gt;</term>
+    /// <description>Find exact term abc near exact term def</description>
+    /// </item>
+    /// <item>
+    /// <term>abc and (def or ghi)</term>
+    /// <description>Find inflectional forms of both abc and either def or ghi</description>
+    /// </item>
+    /// </list>
     /// </remarks>
     public class FtsQuery
     {
-        // Characters not allowed in unquoted search terms
+        /// <summary>
+        /// Characters not allowed in unquoted search terms.
+        /// </summary>
         protected static readonly string Punctuation = "~\"`!@#$%^&*()-+=[]{}\\|;:,.<>?/";
 
         /// <summary>
@@ -123,7 +161,7 @@ namespace SoftCircuits.FullTextSearchQuery
             INode? node;
             string term;
 
-            ParsingHelper parser = new ParsingHelper(query);
+            ParsingHelper parser = new(query);
             while (!parser.EndOfText)
             {
                 if (resetState)
@@ -291,11 +329,7 @@ namespace SoftCircuits.FullTextSearchQuery
                     // If only first child expression is an exclude expression,
                     // then simply swap child expressions
                     if (!internalNode.Exclude && internalNode.LeftChild.Exclude)
-                    {
-                        var temp = internalNode.LeftChild;
-                        internalNode.LeftChild = internalNode.RightChild;
-                        internalNode.RightChild = temp;
-                    }
+                        (internalNode.RightChild, internalNode.LeftChild) = (internalNode.LeftChild, internalNode.RightChild);
                 }
             }
             // Eliminate expression group if it contains only exclude expressions
@@ -354,6 +388,7 @@ namespace SoftCircuits.FullTextSearchQuery
         /// <param name="root">Root node of expression tree</param>
         /// <param name="node">Node to add</param>
         /// <param name="conjunction">Conjunction used to join with other nodes</param>
+        /// <param name="group">Indicates whether the term is enclosed in parenthases.</param>
         /// <returns>The new root node</returns>
         internal static INode? AddNode(INode? root, INode? node, ConjunctionType conjunction, bool group = false)
         {
@@ -361,14 +396,15 @@ namespace SoftCircuits.FullTextSearchQuery
             {
                 node.Grouped = group;
                 if (root != null)
+                {
                     root = new InternalNode
                     {
                         LeftChild = root,
                         RightChild = node,
                         Conjunction = conjunction
                     };
-                else
-                    root = node;
+                }
+                else root = node;
             }
             return root;
         }

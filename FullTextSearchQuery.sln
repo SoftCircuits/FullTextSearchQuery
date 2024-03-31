@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29020.237
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34616.47
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FullTextSearchQuery", "FullTextSearchQuery\FullTextSearchQuery.csproj", "{83D6C55B-AE86-4DE7-A830-5E7586AB730E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestFullTextSearchQuery", "TestFullTextSearchQuery\TestFullTextSearchQuery.csproj", "{67D1B210-6AFC-45A1-B496-7A83F65ED482}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FullTextSearchQueryApp", "FullTextSearchQueryApp\FullTextSearchQueryApp.csproj", "{5CC6BE3B-D3FE-4ADA-BE8E-C17ED12D739A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fts.Test", "Fts.Test\Fts.Test.csproj", "{052A2EF3-FCB6-4AFA-A6C5-B840B0BEB2DF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FullTextSearchQueryTests", "FullTextSearchQueryTests\FullTextSearchQueryTests.csproj", "{6EB85562-2682-4798-A434-38240B498E25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +19,14 @@ Global
 		{83D6C55B-AE86-4DE7-A830-5E7586AB730E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83D6C55B-AE86-4DE7-A830-5E7586AB730E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83D6C55B-AE86-4DE7-A830-5E7586AB730E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{67D1B210-6AFC-45A1-B496-7A83F65ED482}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{67D1B210-6AFC-45A1-B496-7A83F65ED482}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{67D1B210-6AFC-45A1-B496-7A83F65ED482}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{67D1B210-6AFC-45A1-B496-7A83F65ED482}.Release|Any CPU.Build.0 = Release|Any CPU
-		{052A2EF3-FCB6-4AFA-A6C5-B840B0BEB2DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{052A2EF3-FCB6-4AFA-A6C5-B840B0BEB2DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{052A2EF3-FCB6-4AFA-A6C5-B840B0BEB2DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{052A2EF3-FCB6-4AFA-A6C5-B840B0BEB2DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CC6BE3B-D3FE-4ADA-BE8E-C17ED12D739A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CC6BE3B-D3FE-4ADA-BE8E-C17ED12D739A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CC6BE3B-D3FE-4ADA-BE8E-C17ED12D739A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CC6BE3B-D3FE-4ADA-BE8E-C17ED12D739A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EB85562-2682-4798-A434-38240B498E25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EB85562-2682-4798-A434-38240B498E25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EB85562-2682-4798-A434-38240B498E25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EB85562-2682-4798-A434-38240B498E25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

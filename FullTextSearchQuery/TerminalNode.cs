@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2020-2024 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace SoftCircuits.FullTextSearchQuery
         public string? Term { get; set; }
         public TermForm TermForm { get; set; }
 
-        private static readonly Dictionary<TermForm, string> TermFormatLookup = new Dictionary<TermForm, string>
+        private static readonly Dictionary<TermForm, string> TermFormatLookup = new()
         {
             [TermForm.Inflectional] = "{0}FORMSOF(INFLECTIONAL, {1})",
             [TermForm.Thesaurus] = "{0}FORMSOF(THESAURUS, {1})",

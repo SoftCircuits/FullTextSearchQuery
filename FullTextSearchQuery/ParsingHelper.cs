@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2020-2024 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -41,7 +41,7 @@ namespace SoftCircuits.FullTextSearchQuery
         /// Sets the text to be parsed and resets the current position to the start of that text.
         /// </summary>
         /// <param name="text">The text to be parsed.</param>
-#if NET5_0
+#if !NETSTANDARD2_0
         [MemberNotNull(nameof(Text))]
 #endif
         public void Reset(string? text)
@@ -82,7 +82,12 @@ namespace SoftCircuits.FullTextSearchQuery
         /// <param name="end">0-based position of the character that follows the last
         /// character to extract.</param>
         /// <returns>Returns the extracted string</returns>
-        public string Extract(int start, int end) => Text.Substring(start, end - start);
+        public string Extract(int start, int end) =>
+#if NETSTANDARD2_0
+            Text.Substring(start, end - start);
+#else
+            Text[start..end];
+#endif
 
         /// <summary>
         /// Moves the current position ahead one character. The position will not

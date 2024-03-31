@@ -1,4 +1,4 @@
-﻿namespace TestFullTextSearchQuery
+﻿namespace FullTextSearchQueryApp
 {
     partial class Form1
     {
@@ -84,7 +84,7 @@
             this.btnConvert.TabIndex = 4;
             this.btnConvert.Text = "&Convert";
             this.btnConvert.UseVisualStyleBackColor = true;
-            this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
+            this.btnConvert.Click += new System.EventHandler(this.Convert_Click);
             // 
             // Form1
             // 

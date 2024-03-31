@@ -1,19 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net5.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.0</TargetFrameworks>
     <Nullable>annotations</Nullable>
-    <Nullable Condition="'$(TargetFramework)' == 'net5.0'">enable</Nullable>
+    <Nullable Condition="'$(TargetFramework)' != 'netstandard2.0'">enable</Nullable>
     <LangVersion>9.0</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Nullable Condition="'$(TargetFramework)' != 'netstandard2.0'">enable</Nullable>
     <PackageId>SoftCircuits.FullTextSearchQuery</PackageId>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Jonathan Wood</Authors>
     <Company>SoftCircuits</Company>
-    <Copyright>Copyright © 2019-2021 SoftCircuits</Copyright>
+    <Copyright>Copyright © 2019-2024 SoftCircuits</Copyright>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <PackageTags>full-text-search full-text full text search query fulltext sql-server</PackageTags>
-    <PackageReleaseNotes>Now targeting .NET Standard 2.0 or .NET 5.0 and supports nullable reference types; Added unit tests.</PackageReleaseNotes>
+    <PackageReleaseNotes>Now including missing XML documentation file; Added direct support for .NET 6, 7 and 8; Removed direct support for now deprecated .NET 5.0; Miscellaneous tweaks and optimizations.</PackageReleaseNotes>
     <NeutralLanguage>en-US</NeutralLanguage>
     <RepositoryType>git</RepositoryType>
     <Description>Full Text Search Query is a .NET class library that converts a user-friendly search term into a valid Microsoft SQL Server full-text-search query. The code attempts to gracefully handle all syntax cases that would cause SQL Server to generate an error.
@@ -21,14 +23,19 @@
 Now targeting .NET Standard 2.0 or .NET 5.0, and supports nullable reference types.</Description>
     <PackageProjectUrl>https://github.com/SoftCircuits/FullTextSearchQuery</PackageProjectUrl>
     <RepositoryUrl>https://github.com/SoftCircuits/FullTextSearchQuery</RepositoryUrl>
-    <Version>2.0.0</Version>
+    <Version>2.1.0</Version>
     <PackageIcon>Logo_64x64.png</PackageIcon>
     <PackageIconUrl />
+    <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="License.txt" />
     <None Remove="ve-FE62.tmp" />
+    <None Include="..\..\SoftCircuits.FixedWidthParser\ReadMe.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Include="..\License.txt">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
