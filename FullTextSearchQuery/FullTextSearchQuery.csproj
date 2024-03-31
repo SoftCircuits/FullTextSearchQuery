@@ -23,7 +23,7 @@
 Now targeting .NET Standard 2.0 or .NET 5.0, and supports nullable reference types.</Description>
     <PackageProjectUrl>https://github.com/SoftCircuits/FullTextSearchQuery</PackageProjectUrl>
     <RepositoryUrl>https://github.com/SoftCircuits/FullTextSearchQuery</RepositoryUrl>
-    <Version>2.1.0</Version>
+    <Version>2.2.0</Version>
     <PackageIcon>Logo_64x64.png</PackageIcon>
     <PackageIconUrl />
     <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
