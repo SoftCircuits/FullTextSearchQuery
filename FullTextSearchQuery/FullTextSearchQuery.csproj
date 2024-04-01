@@ -26,13 +26,13 @@ Now targeting .NET Standard 2.0 or .NET 5.0, and supports nullable reference typ
     <Version>2.2.1</Version>
     <PackageIcon>Logo_64x64.png</PackageIcon>
     <PackageIconUrl />
-    <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="License.txt" />
     <None Remove="ve-FE62.tmp" />
-    <None Include="..\..\SoftCircuits.FixedWidthParser\ReadMe.md">
+    <None Include="..\README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
