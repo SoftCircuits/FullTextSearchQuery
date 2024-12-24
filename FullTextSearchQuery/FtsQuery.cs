@@ -278,7 +278,7 @@ namespace SoftCircuits.FullTextSearchQuery
         /// * This method converts all NEAR conjunctions to AND when either subexpression is not
         /// an InternalNode with the form TermForms.Literal.
         /// </remarks>
-        internal INode? FixUpExpressionTree(INode? node, bool isRoot = false)
+        internal static INode? FixUpExpressionTree(INode? node, bool isRoot = false)
         {
             // Test for empty expression tree
             if (node == null) return null;

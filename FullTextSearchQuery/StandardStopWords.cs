@@ -29,7 +29,7 @@ namespace SoftCircuits.FullTextSearchQuery
         /// </code>
         /// </remarks>
         public static string[] StopWords =
-        {
+        [
             "$",
             "0",
             "1",
@@ -184,6 +184,6 @@ namespace SoftCircuits.FullTextSearchQuery
             "would",
             "you",
             "your",
-        };
+        ];
     }
 }
