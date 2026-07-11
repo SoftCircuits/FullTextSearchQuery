@@ -1,4 +1,4 @@
-// Copyright (c) 2020-2024 Jonathan Wood (www.softcircuits.com)
+// Copyright (c) 2023-2026 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using SoftCircuits.FullTextSearchQuery;
@@ -12,7 +12,7 @@ namespace FullTextSearchQueryTests
         {
             FtsQuery query = new(true);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Inflectional forms
                 Assert.That(query.Transform("abc"), Is.EqualTo("FORMSOF(INFLECTIONAL, abc)"));
@@ -34,7 +34,7 @@ namespace FullTextSearchQueryTests
                 Assert.That(query.Transform("<+abc +def>"), Is.EqualTo("\"abc\" NEAR \"def\""));
                 // Inflectional forms of both "abc", and either "def" or "ghi".
                 Assert.That(query.Transform("abc and (def or ghi)"), Is.EqualTo("FORMSOF(INFLECTIONAL, abc) AND (FORMSOF(INFLECTIONAL, def) OR FORMSOF(INFLECTIONAL, ghi))"));
-            });
+            }
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace FullTextSearchQueryTests
         {
             FtsQuery query = new(true);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Subexpressions swapped
                 Assert.That(query.Transform("NOT term1 AND term2"), Is.EqualTo("FORMSOF(INFLECTIONAL, term2) AND NOT FORMSOF(INFLECTIONAL, term1)"));
@@ -56,7 +56,7 @@ namespace FullTextSearchQueryTests
                 Assert.That(query.Transform("term1 OR NOT term2"), Is.EqualTo(""));
                 // NEAR conjunction changed to AND
                 Assert.That(query.Transform("term1 NEAR NOT term2"), Is.EqualTo("FORMSOF(INFLECTIONAL, term1) AND NOT FORMSOF(INFLECTIONAL, term2)"));
-            });
+            }
         }
 
         [Test]
